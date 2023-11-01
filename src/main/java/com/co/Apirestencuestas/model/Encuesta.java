@@ -14,14 +14,14 @@ public class Encuesta implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "Encuesta_ID")
+    @Column(name = "ENCUESTA_ID")
     private Long id;
 
     @Column(name = "pregunta")
     private String pregunta;
 
     @OneToMany(cascade = CascadeType.ALL)                                       //CascadeType.ALL quiere decir que cuando se elimine una encuesta se eliminara tambien las opciones
-    @JoinColumn(name = "Encuesta_ID")
+    @JoinColumn(name = "ENCUESTA_ID")
     @OrderBy                                                                    //@OrderBy Indica que se va a ordenar por opciones
     private Set<Opcion> opciones;
 }

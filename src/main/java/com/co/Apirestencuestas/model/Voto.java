@@ -1,5 +1,6 @@
 package com.co.Apirestencuestas.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -9,15 +10,16 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Voto implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "Voto_ID")
+    @Column(name = "VOTO_ID")
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "Opcion_ID")
+    @JoinColumn(name = "OPCION_ID")
     private Opcion opcion;
 
 }
