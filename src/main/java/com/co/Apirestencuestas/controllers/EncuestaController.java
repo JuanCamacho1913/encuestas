@@ -1,5 +1,6 @@
 package com.co.Apirestencuestas.controllers;
 
+import com.co.Apirestencuestas.exception.ResourceNotFoundException;
 import com.co.Apirestencuestas.model.Encuesta;
 import com.co.Apirestencuestas.model.Opcion;
 import com.co.Apirestencuestas.repositories.EncuestaRepository;
@@ -28,6 +29,7 @@ public class EncuestaController {
 
     @GetMapping("/{encuestaId}")
     public ResponseEntity<?> obtenerEncuesta(@PathVariable Long encuestaId) {
+        verifyEncuesta(encuestaId);
         Optional<Encuesta> encuesta = encuestaRepository.findById(encuestaId);                          //Optional<> Indica que va a retornar un true si existe o un false si no
         if (encuesta.isPresent()) {
             return new ResponseEntity<>(encuesta, HttpStatus.OK);
@@ -53,6 +55,7 @@ public class EncuestaController {
 
     @PutMapping("/{encuestaId}")
     public ResponseEntity<?> actualizarEncuesta(@PathVariable Long encuestaId, @RequestBody Encuesta encuesta) {
+        verifyEncuesta(encuestaId);
         encuesta.setId(encuestaId);
         encuestaRepository.save(encuesta);
 
@@ -61,8 +64,15 @@ public class EncuestaController {
 
     @DeleteMapping("/{encuestaId}")
     public ResponseEntity<?> eliminarEncuesta(@PathVariable Long encuestaId) {
+        verifyEncuesta(encuestaId);
         encuestaRepository.deleteById(encuestaId);
 
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    protected void verifyEncuesta(@PathVariable Long encuestaId) {
+        Optional<Encuesta> encuesta = encuestaRepository.findById(encuestaId);
+        if (!encuesta.isPresent())
+            throw new ResourceNotFoundException("Encuesta con el ID: " + encuestaId + ", no encontrado");
     }
 }
