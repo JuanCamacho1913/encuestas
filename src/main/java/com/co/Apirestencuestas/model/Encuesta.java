@@ -1,6 +1,8 @@
 package com.co.Apirestencuestas.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.io.Serializable;
@@ -18,10 +20,12 @@ public class Encuesta implements Serializable {
     private Long id;
 
     @Column(name = "pregunta")
+    @NotEmpty                                                                   //@NotEmpty indica que este campo no puede estar vacio.
     private String pregunta;
 
-    @OneToMany(cascade = CascadeType.ALL)                                       //CascadeType.ALL quiere decir que cuando se elimine una encuesta se eliminara tambien las opciones
+    @OneToMany(cascade = CascadeType.ALL)                                       //CascadeType.ALL quiere decir que cuando se elimine una encuesta se eliminara tambien las opciones.
     @JoinColumn(name = "ENCUESTA_ID")
-    @OrderBy                                                                    //@OrderBy Indica que se va a ordenar por opciones
+    @OrderBy                                                                    //@OrderBy Indica que se va a ordenar por opciones.
+    @Size(min = 2, max = 6)                                                     //@Size() indica el minimo y maximo de opciones que pueden haber.
     private Set<Opcion> opciones;
 }

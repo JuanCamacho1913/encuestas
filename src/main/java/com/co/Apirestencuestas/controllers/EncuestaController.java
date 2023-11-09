@@ -4,6 +4,7 @@ import com.co.Apirestencuestas.exception.ResourceNotFoundException;
 import com.co.Apirestencuestas.model.Encuesta;
 import com.co.Apirestencuestas.model.Opcion;
 import com.co.Apirestencuestas.repositories.EncuestaRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -40,7 +41,7 @@ public class EncuestaController {
     }
 
     @PostMapping("")
-    public ResponseEntity<?> crearEncuesta(@RequestBody Encuesta encuesta) {
+    public ResponseEntity<?> crearEncuesta(@Valid @RequestBody Encuesta encuesta) {
         encuesta = encuestaRepository.save(encuesta);
 
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -54,7 +55,7 @@ public class EncuestaController {
     }
 
     @PutMapping("/{encuestaId}")
-    public ResponseEntity<?> actualizarEncuesta(@PathVariable Long encuestaId, @RequestBody Encuesta encuesta) {
+    public ResponseEntity<?> actualizarEncuesta(@Valid @PathVariable Long encuestaId, @RequestBody Encuesta encuesta) {
         verifyEncuesta(encuestaId);
         encuesta.setId(encuestaId);
         encuestaRepository.save(encuesta);
@@ -70,7 +71,7 @@ public class EncuestaController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    protected void verifyEncuesta(@PathVariable Long encuestaId) {
+    protected void verifyEncuesta(@PathVariable Long encuestaId) {                                                  //Se encarga de verificar si una encuesta existe o no existe
         Optional<Encuesta> encuesta = encuestaRepository.findById(encuestaId);
         if (!encuesta.isPresent())
             throw new ResourceNotFoundException("Encuesta con el ID: " + encuestaId + ", no encontrado");
